@@ -1,0 +1,104 @@
+rules_version = '2';
+
+// Sea Go security rules.
+// Roles live in users/{uid}.role ("user" | "admin"). Nobody can grant themselves a role:
+// new accounts must be "user", and only admins may change `role` afterwards.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    function isSelf(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // ── Profiles ───────────────────────────────────────────────────────────
+    match /users/{uid} {
+      allow read: if isSelf(uid) || isAdmin();
+
+      allow create: if isSelf(uid)
+        && request.resource.data.role == 'user';
+
+      allow update: if isAdmin()
+        || (isSelf(uid) && request.resource.data.role == resource.data.role);
+
+      allow delete: if false;
+    }
+
+    // ── Shipments (private) ────────────────────────────────────────────────
+    match /shipments/{shipmentId} {
+      allow read: if isSignedIn()
+        && (resource.data.userId == request.auth.uid || isAdmin());
+
+      allow create: if isSignedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.status == 'booked'
+        && request.resource.data.bookingNumber is string
+        && request.resource.data.bookingNumber.size() <= 20;
+
+      allow update: if isAdmin();
+      allow delete: if false;
+    }
+
+    // ── Public tracking records (sanitised: no names, contacts or cargo) ───
+    // Readable only by exact booking number (get), never listable.
+    match /trackingLookup/{bookingNumber} {
+      allow get: if true;
+      allow list: if false;
+
+      allow create: if isSignedIn()
+        && request.resource.data.bookingNumber == bookingNumber
+        && request.resource.data.status == 'booked';
+
+      allow update: if isAdmin();
+      allow delete: if false;
+    }
+
+    // ── Chat ───────────────────────────────────────────────────────────────
+    // One conversation per customer, keyed by their uid.
+    match /conversations/{customerId} {
+      allow read: if isSelf(customerId) || isAdmin();
+
+      allow create, update: if (isSelf(customerId) && request.resource.data.userId == customerId)
+        || isAdmin();
+
+      allow delete: if false;
+
+      match /messages/{messageId} {
+        allow read: if isSelf(customerId) || isAdmin();
+
+        allow create: if isSignedIn()
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 2000
+          && request.resource.data.senderId == request.auth.uid
+          && (
+            (isSelf(customerId) && request.resource.data.senderRole == 'user')
+            || (isAdmin() && request.resource.data.senderRole == 'admin')
+          );
+
+        allow update, delete: if false;
+      }
+    }
+
+    // ── Website contact form ───────────────────────────────────────────────
+    match /enquiries/{enquiryId} {
+      allow create: if request.resource.data.keys().hasOnly(['name', 'email', 'phone', 'topic', 'message', 'status', 'createdAt'])
+        && request.resource.data.name is string && request.resource.data.name.size() <= 200
+        && request.resource.data.email is string && request.resource.data.email.size() <= 254
+        && request.resource.data.message is string && request.resource.data.message.size() <= 4000
+        && request.resource.data.status == 'new';
+
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}

@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+/* Dark mode is driven by <html data-theme="dark"> (set before paint in layout.js) */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ── Palette ─────────────────────────────────────────────────────────────────
+   sea-*   brand blues, from foam (50) to deep keel (950)
+   aqua-*  a single live-signal accent, used sparingly
+   Semantic tokens below switch between light and dark.                       */
+@theme {
+  --font-sans: "Public Sans Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Manrope Variable", "Public Sans Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-sea-50: #eaf6fd;
+  --color-sea-100: #d3ecfa;
+  --color-sea-200: #a9d8f3;
+  --color-sea-300: #74beea;
+  --color-sea-400: #3fa0dc;
+  --color-sea-500: #1583c8;
+  --color-sea-600: #0a68a8;
+  --color-sea-700: #0b5386;
+  --color-sea-800: #0e3f66;
+  --color-sea-900: #0b2d49;
+  --color-sea-950: #071c30;
+
+  --color-aqua-400: #2dd4e0;
+  --color-aqua-500: #14b8c6;
+}
+
+@theme inline {
+  --color-canvas: var(--c-canvas);
+  --color-soft: var(--c-soft);
+  --color-surface: var(--c-surface);
+  --color-line: var(--c-line);
+  --color-ink: var(--c-ink);
+  --color-muted: var(--c-muted);
+  --color-primary: var(--c-primary);
+  --color-primary-hover: var(--c-primary-hover);
+  --color-link: var(--c-link);
+}
+
+:root {
+  color-scheme: light;
+  --c-canvas: #ffffff;
+  --c-soft: #f2f7fb;
+  --c-surface: #ffffff;
+  --c-line: #d9e5ee;
+  --c-ink: #0b1b2b;
+  --c-muted: #53697c;
+  --c-primary: #0a68a8;
+  --c-primary-hover: #0b5386;
+  --c-link: #0a68a8;
+  --c-ring: #3fa0dc;
+  --shadow-card: 0 1px 2px rgba(7, 28, 48, 0.05), 0 10px 28px -14px rgba(7, 28, 48, 0.16);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --c-canvas: #06121f;
+  --c-soft: #0a1b2d;
+  --c-surface: #0d2136;
+  --c-line: #1a3550;
+  --c-ink: #e7f0f8;
+  --c-muted: #92a9bd;
+  --c-primary: #0f76b8;
+  --c-primary-hover: #1583c8;
+  --c-link: #62b6ee;
+  --c-ring: #3fa0dc;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 28px -14px rgba(0, 0, 0, 0.6);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--c-canvas);
+    color: var(--c-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    color: var(--c-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--c-ring);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  ::selection {
+    background: var(--color-sea-300);
+    color: var(--color-sea-950);
+  }
+  button:not(:disabled), [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+  /* Grid items default to min-width:auto, so one long unbroken string can stretch a whole
+     column past the viewport on phones. Let grid children shrink instead. */
+  :where(.grid) > * {
+    min-width: 0;
+  }
+}
+
+@layer components {
+  .card {
+    background: var(--c-surface);
+    border: 1px solid var(--c-line);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-card);
+  }
+  .container-x {
+    width: 100%;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 640px) { .container-x { padding-inline: 2rem; } }
+  .scroll-thin { scrollbar-width: thin; scrollbar-color: var(--c-line) transparent; }
+}
+
+/* ── Motion ──────────────────────────────────────────────────────────────────
+   One orchestrated sequence on the home hero, then motion only in response to
+   what the person does (new message, status change, open/close).             */
+@keyframes wave-drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes bob { 0%, 100% { transform: translateY(0) rotate(-0.6deg); } 50% { transform: translateY(-6px) rotate(0.6deg); } }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes ping-ring { 0% { transform: scale(0.6); opacity: 0.7; } 100% { transform: scale(2.4); opacity: 0; } }
+@keyframes pop { from { opacity: 0; transform: translateY(6px) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@keyframes sheet-in { from { transform: translateX(-100%); } to { transform: none; } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.wave-a { animation: wave-drift 38s linear infinite; }
+.wave-b { animation: wave-drift 26s linear infinite reverse; }
+.wave-c { animation: wave-drift 18s linear infinite; }
+.bob { animation: bob 6s ease-in-out infinite; }
+.rise { opacity: 0; animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; }
+.pop-in { animation: pop 0.22s ease-out both; }
+.fade-in { animation: fade-in 0.2s ease-out both; }
+.sheet-in { animation: sheet-in 0.25s ease-out both; }
+.ping-ring { transform-origin: center; transform-box: fill-box; animation: ping-ring 2.4s ease-out infinite; }
+.draw-line { stroke-dasharray: 100; stroke-dashoffset: 100; animation: draw 2.2s 0.5s ease-out forwards; }
+.skeleton {
+  background: linear-gradient(90deg, var(--c-soft) 25%, var(--c-line) 37%, var(--c-soft) 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.6s ease infinite;
+  border-radius: 0.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .wave-a, .wave-b, .wave-c, .bob, .ping-ring { animation: none; }
+  .rise { opacity: 1; animation: none; }
+  .draw-line { stroke-dashoffset: 0; animation: none; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+}
+
+/* ── Route map colours ───────────────────────────────────────────────────── */
+.worldmap {
+  --m-sea: #d8e9f5;
+  --m-land: #f7fafc;
+  --m-border: #bdd0e0;
+  --m-route: #0a68a8;
+  --m-done: #0a68a8;
+  --m-label: #0b1b2b;
+  --m-halo: #d8e9f5;
+  --m-port: #7d97ad;
+}
+[data-theme="dark"] .worldmap {
+  --m-sea: #0a1d31;
+  --m-land: #133049;
+  --m-border: #1f4766;
+  --m-route: #3fa0dc;
+  --m-done: #62c8f2;
+  --m-label: #e7f0f8;
+  --m-halo: #0a1d31;
+  --m-port: #6c93b1;
+}
+/* Always-dark surfaces such as the home hero */
+.worldmap.on-dark {
+  --m-sea: transparent;
+  --m-land: rgba(255, 255, 255, 0.1);
+  --m-border: rgba(255, 255, 255, 0.14);
+  --m-route: rgba(255, 255, 255, 0.5);
+  --m-done: #5eead4;
+  --m-label: #ffffff;
+  --m-halo: rgba(7, 28, 48, 0.85);
+  --m-port: rgba(255, 255, 255, 0.4);
+}
