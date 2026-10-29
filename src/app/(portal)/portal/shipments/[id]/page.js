@@ -14,9 +14,10 @@ function BookedBanner({ bookingNumber }) {
   if (!params.get("booked")) return null;
   return (
     <Alert tone="success" className="mb-6">
-      <p className="font-semibold">Booking received.</p>
+      <p className="font-semibold">Booking received and placed on hold.</p>
       <p className="mt-0.5">
-        Your booking number is <span className="font-mono font-bold">{bookingNumber}</span>. Share it with anyone who needs to track this cargo. Our team will confirm the sailing shortly.
+        Your booking number is <span className="font-mono font-bold">{bookingNumber}</span>. The Sea Go team will now verify your shipment and inspect the actual package before approving it for transport.
+        We&apos;ll update the status here as soon as it&apos;s approved. Share the booking number with anyone who needs to track it.
       </p>
     </Alert>
   );

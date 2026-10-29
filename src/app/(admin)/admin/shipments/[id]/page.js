@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useShipment } from "@/features/shipments/hooks";
 import ShipmentDetails from "@/features/shipments/ShipmentDetails";
 import AdminShipmentControls from "@/features/shipments/AdminShipmentControls";
+import VerificationPanel from "@/features/shipments/VerificationPanel";
+import { isOnHold } from "@/features/shipments/verification";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { EmptyState, PageLoader } from "@/components/ui/feedback";
@@ -28,9 +30,10 @@ export default function AdminShipmentPage({ params }) {
       ) : (
         <div className="grid gap-6 xl:grid-cols-[1fr_24rem]">
           <ShipmentDetails shipment={shipment} showCustomer />
-          {/* key resets the form when a different shipment is opened */}
-          <div className="xl:sticky xl:top-6 xl:self-start">
-            <AdminShipmentControls key={shipment.id} shipment={shipment} />
+          {/* key resets the forms when a different shipment is opened */}
+          <div className="space-y-6 xl:self-start">
+            <VerificationPanel key={`v-${shipment.id}`} shipment={shipment} />
+            <AdminShipmentControls key={shipment.id} shipment={shipment} locked={isOnHold(shipment)} />
           </div>
         </div>
       )}

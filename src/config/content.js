@@ -131,7 +131,7 @@ export const process = [
   },
   {
     title: "Add sender and receiver",
-    body: "Enter who it's from and exactly who and where it's going to. We issue a booking number.",
+    body: "Enter who it's from and exactly who and where it's going to. We issue a booking number, and our team verifies the shipment before it sails.",
   },
   {
     title: "Follow every milestone",
@@ -171,6 +171,10 @@ export const faqs = [
   {
     q: "How do I send a package to someone?",
     a: "Create an account, choose Send a shipment, pick Package, then enter the sender and the receiver's name, phone and full address. You get a booking number straight away that you can share with the receiver.",
+  },
+  {
+    q: "Why is my shipment on hold?",
+    a: "Every new booking is placed on hold while the Sea Go team verifies it. We inspect the actual package or cargo to confirm it matches what you declared, and approve it for transport once it's cleared. The status updates in your portal and on the tracking page, and we'll message you if we need anything.",
   },
   {
     q: "How long does a package take?",

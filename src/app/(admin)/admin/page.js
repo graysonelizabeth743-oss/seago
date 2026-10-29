@@ -5,6 +5,7 @@ import { useAllShipments } from "@/features/shipments/hooks";
 import { useConversations } from "@/features/chat/hooks";
 import { useEnquiries, useUsers } from "@/features/admin/hooks";
 import { isActive } from "@/features/shipments/statuses";
+import { isOnHold } from "@/features/shipments/verification";
 import ShipmentList from "@/features/shipments/ShipmentList";
 import PageHeader from "@/components/ui/PageHeader";
 import { Alert, EmptyState } from "@/components/ui/feedback";
@@ -29,7 +30,7 @@ export default function AdminOverview() {
   const { items: enquiries, loading: enqLoading } = useEnquiries();
   const { items: users, loading: usersLoading } = useUsers();
 
-  const awaiting = shipments.filter((s) => s.status === "booked");
+  const awaiting = shipments.filter(isOnHold);
   const delayed = shipments.filter((s) => s.status === "delayed");
   const active = shipments.filter((s) => isActive(s.status)).length;
   const unread = conversations.reduce((n, c) => n + (c.unreadAdmin || 0), 0);
@@ -43,7 +44,7 @@ export default function AdminOverview() {
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
         <Stat label="Active shipments" value={active} loading={loading} href="/admin/shipments" />
-        <Stat label="Awaiting confirmation" value={awaiting.length} loading={loading} href="/admin/shipments" tone={awaiting.length ? "text-link" : ""} />
+        <Stat label="Awaiting verification" value={awaiting.length} loading={loading} href="/admin/shipments" tone={awaiting.length ? "text-link" : ""} />
         <Stat label="Unread messages" value={unread} loading={convLoading} href="/admin/inbox" tone={unread ? "text-link" : ""} />
         <Stat label="New enquiries" value={newEnquiries} loading={enqLoading} href="/admin/enquiries" />
         <Stat label="Customers" value={users.length} loading={usersLoading} href="/admin/users" />
@@ -52,7 +53,7 @@ export default function AdminOverview() {
       <section className="card mt-8 overflow-hidden">
         <div className="border-b border-line px-4 py-4 sm:px-6">
           <h2 className="text-lg font-bold">Needs attention</h2>
-          <p className="text-sm text-muted">New bookings to confirm and delayed shipments.</p>
+          <p className="text-sm text-muted">New bookings to verify and delayed shipments.</p>
         </div>
         {loading ? (
           <div className="space-y-3 p-6">{[0, 1, 2].map((i) => <div key={i} className="skeleton h-10 w-full" />)}</div>

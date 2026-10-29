@@ -56,7 +56,13 @@ export async function createShipment({ user, profile, form, quote }) {
   const lookupRef = doc(db, LOOKUP, bookingNumber);
   const now = Timestamp.now();
 
-  const event = { status: "booked", label: "Booking received", location: origin.name, note: "", at: now };
+  const event = {
+    status: "booked",
+    label: "Booking received",
+    location: origin.name,
+    note: "On hold until the Sea Go team has verified the shipment.",
+    at: now,
+  };
   const place = (p) => ({ code: p.code, name: p.name, country: p.country });
   const trim = (v) => String(v ?? "").trim();
 
@@ -71,6 +77,7 @@ export async function createShipment({ user, profile, form, quote }) {
     userName: profile?.name || user.displayName || "",
     userEmail: user.email || "",
     status: "booked",
+    verification: { state: "pending" },
     progress: statusMeta("booked").progress,
     origin: place(origin),
     destination: place(destination),
@@ -123,6 +130,7 @@ export async function createShipment({ user, profile, form, quote }) {
     bookingNumber,
     kind,
     status: "booked",
+    verification: "pending",
     progress: statusMeta("booked").progress,
     origin: place(origin),
     destination: place(destination),
@@ -229,6 +237,53 @@ export async function adminUpdateShipment(shipment, { status, location, note, ve
       destination: shipment.destination,
       vessel: (vessel || "").trim(),
       eta: etaValue,
+      events: arrayUnion(event),
+      updatedAt: serverTimestamp(),
+    },
+    { merge: true }
+  );
+  await batch.commit();
+}
+
+/**
+ * Admin: approve or reject a shipment that is on hold.
+ *  approve → verification "approved", status "confirmed" (cleared for transport)
+ *  reject  → verification "rejected", status "cancelled", with a reason the customer can see
+ * Appends a timeline event and updates the public tracking record. Atomic.
+ */
+export async function adminVerifyShipment(shipment, { decision, note, adminId, adminName }) {
+  const approve = decision === "approve";
+  const text = String(note || "").trim();
+  if (!approve && text.length < 5) throw new Error("Please give the customer a reason (at least 5 characters).");
+
+  const status = approve ? "confirmed" : "cancelled";
+  const progress = approve ? statusMeta("confirmed").progress : shipment.progress ?? 0;
+  const now = Timestamp.now();
+  const event = {
+    status,
+    label: approve ? "Verified and approved for transport" : "Cancelled after verification",
+    location: shipment.origin?.name || "",
+    note: text,
+    at: now,
+  };
+
+  const batch = writeBatch(db);
+  batch.update(doc(db, SHIPMENTS, shipment.id), {
+    status,
+    progress,
+    verification: { state: approve ? "approved" : "rejected", note: text, by: adminId || "", byName: adminName || "", at: now },
+    events: arrayUnion({ ...event, by: adminId || "" }),
+    updatedAt: serverTimestamp(),
+  });
+  batch.set(
+    doc(db, LOOKUP, shipment.bookingNumber),
+    {
+      bookingNumber: shipment.bookingNumber,
+      status,
+      progress,
+      verification: approve ? "approved" : "rejected",
+      origin: shipment.origin,
+      destination: shipment.destination,
       events: arrayUnion(event),
       updatedAt: serverTimestamp(),
     },

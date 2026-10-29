@@ -1,28 +1,110 @@
 import Link from "next/link";
 import Hero from "@/components/home/Hero";
+import PortMarquee from "@/components/home/PortMarquee";
+import { GiftIllustration, ContainerIllustration } from "@/components/home/Illustrations";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import Faq from "@/components/ui/Faq";
+import Reveal from "@/components/ui/Reveal";
+import CountUp from "@/components/ui/CountUp";
 import WorldMap from "@/features/map/WorldMap";
 import { promises, services, process as steps, faqs } from "@/config/content";
+import { ports, parcelLimits } from "@/config/logistics";
 import { contact } from "@/config/site";
+
+const routeCount = (ports.length * (ports.length - 1)) / 2;
+
+// Every number comes from the config files, so it stays true when you add ports or services.
+const stats = [
+  { value: ports.length, label: "ports in Europe, the Americas, Africa and Asia" },
+  { value: routeCount, label: "port-to-port routes you can book" },
+  { value: services.length, label: "ways to ship, from gifts to containers" },
+  { value: parcelLimits.maxKg, suffix: " kg", label: "the heaviest single package we take" },
+];
+
+const ways = [
+  {
+    key: "parcel",
+    title: "Send a package",
+    body: "Gifts, things you bought online, personal belongings and documents.",
+    points: ["Box sizes from an envelope to extra large", "Optional gift note for the receiver", "Delivered to the receiver's address"],
+    cta: { label: "Send a package", href: "/portal/shipments/new?kind=parcel" },
+    art: <GiftIllustration className="mx-auto h-44 w-full max-w-[15rem] text-ink" />,
+  },
+  {
+    key: "cargo",
+    title: "Ship cargo",
+    body: "Full containers and commercial freight between major ports.",
+    points: ["20ft and 40ft standard, high-cube and refrigerated", "Dedicated booking number per shipment", "Customs paperwork guidance"],
+    cta: { label: "Book cargo", href: "/portal/shipments/new?kind=cargo" },
+    art: <ContainerIllustration className="mx-auto h-44 w-full max-w-[15rem] text-ink" />,
+  },
+];
 
 export default function HomePage() {
   return (
     <>
       <Hero />
+      <PortMarquee />
+
+      {/* By the numbers */}
+      <section className="container-x grid grid-cols-2 gap-8 py-12 md:grid-cols-4" aria-label="Sea Go at a glance">
+        {stats.map((s, i) => (
+          <Reveal key={s.label} delay={i * 0.08}>
+            <p className="font-display text-4xl font-extrabold tracking-tight text-link sm:text-5xl">
+              <CountUp value={s.value} suffix={s.suffix} />
+            </p>
+            <p className="mt-2 max-w-[14rem] text-sm leading-snug text-muted">{s.label}</p>
+          </Reveal>
+        ))}
+      </section>
+
+      {/* Two ways to send */}
+      <section className="bg-soft py-16 sm:py-24" aria-labelledby="ways">
+        <div className="container-x">
+          <Reveal>
+            <h2 id="ways" className="max-w-xl text-3xl font-extrabold sm:text-4xl">
+              A gift box or a container. Same tracking, same team.
+            </h2>
+          </Reveal>
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
+            {ways.map((w, i) => (
+              <Reveal key={w.key} delay={i * 0.12} className="card flex flex-col p-6 sm:p-8">
+                {w.art}
+                <h3 className="mt-4 text-2xl font-bold">{w.title}</h3>
+                <p className="mt-2 text-muted">{w.body}</p>
+                <ul className="mt-5 space-y-2.5">
+                  {w.points.map((p) => (
+                    <li key={p} className="flex items-start gap-3 text-sm">
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sea-100 text-sea-700 dark:bg-sea-900 dark:text-sea-200">
+                        <Icon name="check" size={12} strokeWidth={3} />
+                      </span>
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+                <Button href={w.cta.href} className="mt-7 self-start">
+                  {w.cta.label} <Icon name="arrowRight" size={16} />
+                </Button>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Promises */}
       <section className="container-x py-16 sm:py-20" aria-labelledby="why">
-        <h2 id="why" className="max-w-xl text-3xl font-extrabold sm:text-4xl">
-          What you can count on when you ship with us
-        </h2>
+        <Reveal>
+          <h2 id="why" className="max-w-xl text-3xl font-extrabold sm:text-4xl">
+            What you can count on when you ship with us
+          </h2>
+        </Reveal>
         <div className="mt-10 grid gap-8 md:grid-cols-3 md:gap-10">
-          {promises.map((p) => (
-            <div key={p.title} className="border-t-2 border-primary pt-5">
+          {promises.map((p, i) => (
+            <Reveal key={p.title} delay={i * 0.1} className="border-t-2 border-primary pt-5">
               <h3 className="text-lg font-bold">{p.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted sm:text-base">{p.body}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -30,7 +112,7 @@ export default function HomePage() {
       {/* Services */}
       <section className="bg-soft py-16 sm:py-24" aria-labelledby="services">
         <div className="container-x grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
-          <div className="lg:sticky lg:top-28 lg:self-start">
+          <Reveal className="lg:sticky lg:top-28 lg:self-start">
             <h2 id="services" className="text-3xl font-extrabold sm:text-4xl">
               Whatever you&apos;re sending
             </h2>
@@ -40,26 +122,26 @@ export default function HomePage() {
             <Button href="/services" variant="secondary" className="mt-7">
               All services <Icon name="arrowRight" size={16} />
             </Button>
-          </div>
+          </Reveal>
 
           <ul className="divide-y divide-line border-y border-line">
-            {services.map((s) => (
-              <li key={s.slug}>
+            {services.map((s, i) => (
+              <Reveal as="li" key={s.slug} delay={i * 0.05}>
                 <Link
                   href={`/services/${s.slug}`}
-                  className="group flex items-start justify-between gap-6 py-6 transition-colors hover:bg-surface/60 sm:px-2"
+                  className="group/row flex items-start justify-between gap-6 py-6 transition-colors hover:bg-surface/60 sm:px-2"
                 >
                   <div>
-                    <h3 className="text-lg font-bold transition-colors group-hover:text-link">{s.title}</h3>
+                    <h3 className="text-lg font-bold transition-colors group-hover/row:text-link">{s.title}</h3>
                     <p className="mt-1.5 max-w-lg text-sm leading-relaxed text-muted sm:text-base">{s.summary}</p>
                   </div>
                   <Icon
                     name="arrowRight"
                     size={20}
-                    className="mt-1 shrink-0 text-muted transition-[transform,color] duration-200 group-hover:translate-x-1 group-hover:text-link"
+                    className="mt-1 shrink-0 text-muted transition-[transform,color] duration-200 group-hover/row:translate-x-1 group-hover/row:text-link"
                   />
                 </Link>
-              </li>
+              </Reveal>
             ))}
           </ul>
         </div>
@@ -67,11 +149,16 @@ export default function HomePage() {
 
       {/* Process */}
       <section className="container-x py-16 sm:py-24" aria-labelledby="how">
-        <h2 id="how" className="max-w-xl text-3xl font-extrabold sm:text-4xl">
-          From estimate to doorstep in four steps
-        </h2>
-        <ol className="relative mt-12 grid gap-10 md:grid-cols-4 md:gap-6">
-          <span aria-hidden="true" className="absolute left-0 right-0 top-6 hidden border-t border-dashed border-line md:block" />
+        <Reveal>
+          <h2 id="how" className="max-w-xl text-3xl font-extrabold sm:text-4xl">
+            From estimate to doorstep in four steps
+          </h2>
+        </Reveal>
+        <Reveal as="ol" className="relative mt-12 grid gap-10 md:grid-cols-4 md:gap-6">
+          <span
+            aria-hidden="true"
+            className="absolute left-6 right-6 top-6 hidden origin-left scale-x-0 border-t-2 border-dashed border-sea-300 transition-transform duration-[1400ms] ease-out group-data-[reveal=shown]:scale-x-100 md:block dark:border-sea-700"
+          />
           {steps.map((s, i) => (
             <li key={s.title} className="relative">
               <span className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-primary font-display text-lg font-extrabold text-white shadow-md shadow-sea-900/20">
@@ -81,12 +168,12 @@ export default function HomePage() {
               <p className="mt-2 text-sm leading-relaxed text-muted sm:text-base">{s.body}</p>
             </li>
           ))}
-        </ol>
+        </Reveal>
       </section>
 
       {/* Quote band */}
       <section className="container-x pb-16 sm:pb-24">
-        <div className="relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-sea-900 to-sea-700 px-6 py-12 text-white sm:px-12 sm:py-16">
+        <Reveal className="relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-sea-900 to-sea-700 px-6 py-12 text-white sm:px-12 sm:py-16">
           <div aria-hidden="true" className="absolute -right-10 top-1/2 -z-10 hidden w-[28rem] -translate-y-1/2 opacity-60 md:block">
             <WorldMap from="NLRTM" to="USNYC" animate onDark zoomable={false} fit="full" />
           </div>
@@ -98,13 +185,13 @@ export default function HomePage() {
             <Button href="/quote" variant="light" size="lg">Open the calculator</Button>
             <Button href="/contact" variant="outlineLight" size="lg">Talk to sales</Button>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* FAQ */}
       <section className="container-x pb-16 sm:pb-24" aria-labelledby="faq">
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
-          <div>
+          <Reveal>
             <h2 id="faq" className="text-3xl font-extrabold sm:text-4xl">Common questions</h2>
             <p className="mt-4 text-muted sm:text-lg">
               Still unsure? Email{" "}
@@ -114,8 +201,10 @@ export default function HomePage() {
             <Link href="/faq" className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-link hover:underline">
               See all questions <Icon name="arrowRight" size={14} />
             </Link>
-          </div>
-          <Faq items={faqs.slice(0, 4)} />
+          </Reveal>
+          <Reveal delay={0.1}>
+            <Faq items={faqs.slice(0, 5)} />
+          </Reveal>
         </div>
       </section>
     </>

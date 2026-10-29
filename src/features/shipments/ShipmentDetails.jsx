@@ -2,6 +2,8 @@ import WorldMap from "@/features/map/WorldMap";
 import StatusBadge from "@/features/shipments/StatusBadge";
 import Timeline from "@/features/shipments/Timeline";
 import Icon from "@/components/ui/Icon";
+import { Alert } from "@/components/ui/feedback";
+import { HOLD_MESSAGE, HOLD_TITLE, isOnHold, verificationState } from "@/features/shipments/verification";
 import { statusMeta } from "@/features/shipments/statuses";
 import { containerTypes, cargoTypes, parcelContents, parcelSizes } from "@/config/logistics";
 import { formatDate, formatMoney } from "@/lib/format";
@@ -45,6 +47,9 @@ function Party({ title, icon, person, accent }) {
 /** Read-only shipment view shared by the customer portal and the admin console. */
 export default function ShipmentDetails({ shipment: s, showCustomer = false }) {
   const isParcel = s.kind !== "cargo";
+  const hold = isOnHold(s);
+  const vState = verificationState(s);
+  const decision = typeof s.verification === "object" ? s.verification : null;
   const parcel = s.parcel || {};
   const cargo = s.cargo || {};
   const equipment = containerTypes.find((c) => c.code === cargo.containerType);
@@ -57,13 +62,27 @@ export default function ShipmentDetails({ shipment: s, showCustomer = false }) {
 
   return (
     <div className="space-y-6">
+      {/* Customers see why nothing is moving yet; admins have the verification panel instead */}
+      {hold && !showCustomer && (
+        <Alert tone="warning">
+          <p className="font-semibold">{HOLD_TITLE}</p>
+          <p className="mt-0.5">{HOLD_MESSAGE}</p>
+        </Alert>
+      )}
+      {vState === "rejected" && !showCustomer && (
+        <Alert tone="error">
+          <p className="font-semibold">This shipment was cancelled after verification.</p>
+          {decision?.note && <p className="mt-0.5">{decision.note}</p>}
+        </Alert>
+      )}
+
       <section className="card overflow-hidden">
         <div className="flex flex-wrap items-start justify-between gap-3 border-b border-line p-5 sm:p-6">
           <div>
             <p className="text-xs font-semibold text-muted">{isParcel ? "Package" : "Cargo"} · Booking number</p>
             <h2 className="mt-0.5 font-mono text-xl font-bold tracking-tight sm:text-2xl">{s.bookingNumber}</h2>
           </div>
-          <StatusBadge status={s.status} />
+          <StatusBadge status={s.status} hold={hold} />
         </div>
         <WorldMap
           from={s.origin?.code}
@@ -75,7 +94,7 @@ export default function ShipmentDetails({ shipment: s, showCustomer = false }) {
         <dl className="grid grid-cols-2 gap-5 border-t border-line p-5 sm:grid-cols-3 sm:p-6 lg:grid-cols-5">
           <Item label="Origin">{s.origin?.name}, {s.origin?.country}</Item>
           <Item label="Destination">{s.destination?.name}, {s.destination?.country}</Item>
-          <Item label="Last known position">{s.position?.label || (s.position ? `${Number(s.position.lat).toFixed(2)}, ${Number(s.position.lng).toFixed(2)}` : "Following the status")}</Item>
+          <Item label="Last known position">{hold ? "Awaiting verification" : s.position?.label || (s.position ? `${Number(s.position.lat).toFixed(2)}, ${Number(s.position.lng).toFixed(2)}` : "Following the status")}</Item>
           <Item label="Vessel">{s.vessel || "To be assigned"}</Item>
           <Item label="Est. arrival">{s.eta ? formatDate(s.eta) : "To be confirmed"}</Item>
         </dl>

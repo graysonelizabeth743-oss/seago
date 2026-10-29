@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useAuth } from "@/features/auth/AuthProvider";
 import { useMyShipments } from "@/features/shipments/hooks";
 import { isActive } from "@/features/shipments/statuses";
+import { isOnHold } from "@/features/shipments/verification";
 import ShipmentList from "@/features/shipments/ShipmentList";
 import { useChatBadge } from "@/features/chat/hooks";
 import PageHeader from "@/components/ui/PageHeader";
@@ -28,6 +29,7 @@ export default function PortalOverview() {
   const first = (profile?.name || user?.displayName || "").split(" ")[0];
   const active = shipments.filter((s) => isActive(s.status)).length;
   const delivered = shipments.filter((s) => s.status === "delivered").length;
+  const onHold = shipments.filter(isOnHold).length;
 
   return (
     <>
@@ -37,6 +39,11 @@ export default function PortalOverview() {
         action={<Button href="/portal/shipments/new"><Icon name="plus" size={16} /> Send a shipment</Button>}
       />
 
+      {onHold > 0 && (
+        <Alert tone="warning" className="mb-6">
+          {onHold === 1 ? "1 shipment is" : `${onHold} shipments are`} on hold while the Sea Go team verifies {onHold === 1 ? "it" : "them"}. We inspect the actual package before approving it for transport.
+        </Alert>
+      )}
       {error && <Alert className="mb-6">We couldn&apos;t load your shipments. Check your connection and permissions.</Alert>}
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">

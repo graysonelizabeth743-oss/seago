@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { lookupTracking } from "@/features/shipments/api";
 import { statusMeta } from "@/features/shipments/statuses";
+import { isOnHold } from "@/features/shipments/verification";
 import StatusBadge from "@/features/shipments/StatusBadge";
 import Timeline from "@/features/shipments/Timeline";
 import WorldMap from "@/features/map/WorldMap";
@@ -94,8 +95,13 @@ export default function TrackingLookup() {
                   <p className="text-xs font-semibold text-muted">Booking number</p>
                   <p className="mt-0.5 font-mono text-xl font-bold tracking-tight">{data.bookingNumber}</p>
                 </div>
-                <StatusBadge status={data.status} />
+                <StatusBadge status={data.status} hold={isOnHold(data)} />
               </div>
+              {isOnHold(data) && (
+                <Alert tone="warning" className="mt-5">
+                  This shipment is on hold while the Sea Go team verifies it. It will start moving once it has been approved for transport.
+                </Alert>
+              )}
               <WorldMap
                 from={data.origin?.code}
                 to={data.destination?.code}

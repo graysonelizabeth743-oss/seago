@@ -10,6 +10,7 @@ import {
 import { useAuth } from "@/features/auth/AuthProvider";
 import { estimateQuote, parcelDims, chargeableKg } from "@/features/quotes/calc";
 import { createShipment } from "@/features/shipments/api";
+import { HOLD_MESSAGE, HOLD_TITLE } from "@/features/shipments/verification";
 import { Input, Select, Textarea } from "@/components/ui/forms";
 import { Alert } from "@/components/ui/feedback";
 import Button from "@/components/ui/Button";
@@ -422,6 +423,10 @@ export default function BookingForm() {
               </section>
             </div>
             {form.notes && <p className="text-sm text-muted"><span className="font-semibold text-ink">Notes:</span> {form.notes}</p>}
+            <Alert tone="warning">
+              <p className="font-semibold">{HOLD_TITLE}</p>
+              <p className="mt-0.5">After you confirm, {isParcel ? "your package" : "your cargo"} is placed on hold. {HOLD_MESSAGE}</p>
+            </Alert>
             {submitError && <Alert>{submitError}</Alert>}
           </div>
         )}

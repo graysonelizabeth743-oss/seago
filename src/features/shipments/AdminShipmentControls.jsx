@@ -21,7 +21,7 @@ function isoDate(value) {
 const AUTO = "auto";
 const CUSTOM = "custom";
 
-export default function AdminShipmentControls({ shipment }) {
+export default function AdminShipmentControls({ shipment, locked = false }) {
   const { user } = useAuth();
   const stops = useMemo(() => routeStops(shipment.origin?.code, shipment.destination?.code), [shipment.origin?.code, shipment.destination?.code]);
 
@@ -100,8 +100,14 @@ export default function AdminShipmentControls({ shipment }) {
   return (
     <form onSubmit={onSubmit} className="card space-y-5 p-5 sm:p-6" aria-labelledby="update-title">
       <h2 id="update-title" className="text-lg font-bold">Update shipment</h2>
+      {locked && (
+        <Alert tone="warning">
+          Verify this shipment first. Status and location can be updated once it has been approved.
+        </Alert>
+      )}
       {notice && <Alert tone={notice.tone}>{notice.text}</Alert>}
 
+      <fieldset disabled={locked} className="m-0 min-w-0 space-y-5 border-0 p-0">
       <Select label="Status" name="status" value={form.status} onChange={set("status")}>
         {STATUSES.map((s) => (
           <option key={s.code} value={s.code}>{s.label}</option>
@@ -156,8 +162,10 @@ export default function AdminShipmentControls({ shipment }) {
         <Input label="Estimated arrival" name="eta" type="date" value={form.eta} onChange={set("eta")} />
       </div>
 
+      </fieldset>
+
       <div className="flex flex-wrap gap-3">
-        <Button type="submit" loading={saving}>Save update</Button>
+        <Button type="submit" loading={saving} disabled={locked}>Save update</Button>
         <Button href={`/admin/inbox?c=${shipment.userId}`} variant="secondary">
           <Icon name="message" size={16} /> Message customer
         </Button>

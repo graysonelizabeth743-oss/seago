@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useAllShipments } from "@/features/shipments/hooks";
 import { STATUSES } from "@/features/shipments/statuses";
+import { isOnHold } from "@/features/shipments/verification";
 import ShipmentList from "@/features/shipments/ShipmentList";
 import PageHeader from "@/components/ui/PageHeader";
 import Icon from "@/components/ui/Icon";
@@ -19,7 +20,9 @@ export default function AdminShipmentsPage() {
   const visible = useMemo(() => {
     const term = q.trim().toLowerCase();
     return shipments.filter((s) => {
-      if (status !== "all" && s.status !== status) return false;
+      if (status === "hold") {
+        if (!isOnHold(s)) return false;
+      } else if (status !== "all" && s.status !== status) return false;
       if (!term) return true;
       return [s.bookingNumber, s.userName, s.userEmail, s.origin?.name, s.destination?.name]
         .filter(Boolean)
@@ -44,6 +47,7 @@ export default function AdminShipmentsPage() {
         </div>
         <select value={status} onChange={(e) => setStatus(e.target.value)} aria-label="Filter by status" className={selectCls}>
           <option value="all">All statuses</option>
+          <option value="hold">On hold · awaiting verification</option>
           {STATUSES.map((s) => <option key={s.code} value={s.code}>{s.label}</option>)}
         </select>
       </div>

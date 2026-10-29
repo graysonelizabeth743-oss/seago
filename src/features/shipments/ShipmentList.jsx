@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Icon from "@/components/ui/Icon";
 import StatusBadge from "@/features/shipments/StatusBadge";
+import { isOnHold } from "@/features/shipments/verification";
 import { formatDate } from "@/lib/format";
 
 /** Responsive list: stacked rows on phones, columns from `md` up. */
@@ -24,7 +25,7 @@ export default function ShipmentList({ shipments, hrefBase, showCustomer = false
               {s.origin?.name} <span aria-hidden="true">→</span> <span className="sr-only">to</span> {s.destination?.name}
             </span>
             <span className="justify-self-end md:justify-self-start">
-              <StatusBadge status={s.status} />
+              <StatusBadge status={s.status} hold={isOnHold(s)} />
             </span>
             <span className="hidden text-xs text-muted md:block">{formatDate(s.createdAt)}</span>
             <Icon name="chevronRight" size={18} className="hidden text-muted transition-transform group-hover:translate-x-0.5 md:block" />
