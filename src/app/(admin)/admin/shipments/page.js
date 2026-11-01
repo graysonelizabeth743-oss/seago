@@ -1,3 +1,4 @@
+// src/app/(admin)/admin/shipments/page.js
 "use client";
 
 import { useMemo, useState } from "react";
@@ -10,7 +11,7 @@ import Icon from "@/components/ui/Icon";
 import { Alert, EmptyState } from "@/components/ui/feedback";
 
 const selectCls =
-  "h-10 rounded-xl border border-line bg-surface px-3 text-sm focus:border-sea-400 focus:outline-none focus:ring-2 focus:ring-sea-400/30";
+  "h-10 rounded-xl border border-line bg-surface px-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/35";
 
 export default function AdminShipmentsPage() {
   const { shipments, loading, error } = useAllShipments();
@@ -42,7 +43,7 @@ export default function AdminShipmentsPage() {
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search booking, customer, port"
             aria-label="Search shipments"
-            className="h-10 w-full rounded-xl border border-line bg-surface pl-9 pr-3 text-sm placeholder:text-muted/70 focus:border-sea-400 focus:outline-none focus:ring-2 focus:ring-sea-400/30"
+            className="h-10 w-full rounded-xl border border-line bg-surface pl-9 pr-3 text-sm placeholder:text-muted/70 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/35"
           />
         </div>
         <select value={status} onChange={(e) => setStatus(e.target.value)} aria-label="Filter by status" className={selectCls}>

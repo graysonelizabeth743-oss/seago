@@ -1,3 +1,4 @@
+// src/features/map/WorldMap.jsx
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -250,7 +251,7 @@ export default function WorldMap({ from, to, progress = null, position = null, v
         <button
           type="button"
           onClick={() => setMode(active === "route" ? "full" : "route")}
-          className="absolute bottom-2.5 right-2.5 rounded-lg border border-line bg-surface/90 px-3 py-1.5 text-xs font-semibold text-ink shadow-sm backdrop-blur transition-colors hover:border-sea-400"
+          className="absolute bottom-2.5 right-2.5 rounded-lg border border-line bg-surface/90 px-3 py-1.5 text-xs font-semibold text-ink shadow-sm backdrop-blur transition-colors hover:border-brand-500"
         >
           {active === "route" ? "Show full map" : "Zoom to route"}
         </button>

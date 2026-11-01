@@ -1,3 +1,4 @@
+// src/app/layout.js
 import "@fontsource-variable/manrope";
 import "@fontsource-variable/public-sans";
 import "./globals.css";
@@ -23,12 +24,12 @@ export const viewport = {
   initialScale: 1,
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#06121f" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e0d0a" },
   ],
 };
 
-// Runs before first paint so the saved (or system) theme never flashes.
-const themeScript = `(function(){try{var k='${THEME_KEY}';var t=localStorage.getItem(k);if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme='light'}})();`;
+// Runs before first paint so the saved theme never flashes. The default is light (white); only an explicit choice from the toggle switches to dark.
+const themeScript = `(function(){try{var k='${THEME_KEY}';var t=localStorage.getItem(k);if(t!=='light'&&t!=='dark'){t='light'}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme='light'}})();`;
 
 export default function RootLayout({ children }) {
   return (

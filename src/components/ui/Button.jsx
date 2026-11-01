@@ -1,14 +1,15 @@
+// src/components/ui/Button.jsx
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 import Icon from "@/components/ui/Icon";
 
 const variants = {
   primary:
-    "bg-primary text-white hover:bg-primary-hover shadow-sm shadow-sea-900/10 disabled:hover:bg-primary",
+    "bg-primary text-on-primary hover:bg-primary-hover shadow-sm shadow-brand-700/20 disabled:hover:bg-primary",
   secondary:
-    "bg-surface text-ink border border-line hover:border-sea-400 hover:text-link disabled:hover:border-line disabled:hover:text-ink",
+    "bg-surface text-ink border border-line hover:border-brand-500 hover:text-link disabled:hover:border-line disabled:hover:text-ink",
   ghost: "text-ink hover:bg-soft",
-  light: "bg-white text-sea-900 hover:bg-sea-50 shadow-sm",
+  light: "bg-brand-400 text-graphite-950 hover:bg-brand-300 shadow-sm shadow-brand-500/20",
   outlineLight: "border border-white/30 text-white hover:bg-white/10",
   danger: "bg-red-600 text-white hover:bg-red-700",
 };

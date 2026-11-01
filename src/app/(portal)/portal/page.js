@@ -1,3 +1,4 @@
+// src/app/(portal)/portal/page.js
 "use client";
 
 import Link from "next/link";
@@ -50,7 +51,7 @@ export default function PortalOverview() {
         <Stat label="Active shipments" value={active} loading={loading} />
         <Stat label="Delivered" value={delivered} loading={loading} />
         <Stat label="Total shipments" value={shipments.length} loading={loading} />
-        <Link href="/portal/messages" className="card group p-5 transition-colors hover:border-sea-400">
+        <Link href="/portal/messages" className="card group p-5 transition-colors hover:border-brand-500">
           <p className="text-xs font-semibold text-muted">Messages</p>
           <p className="mt-1 font-display text-3xl font-extrabold">{unread > 0 ? `${unread} new` : "Chat"}</p>
           <p className="mt-0.5 text-xs text-link group-hover:underline">Open conversation</p>

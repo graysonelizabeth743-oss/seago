@@ -1,3 +1,4 @@
+// src/config/content.js
 /**
  * ─────────────────────────────────────────────────────────────────────────────
  *  SEA GO · PAGE CONTENT
@@ -13,6 +14,68 @@ export const hero = {
   secondaryCta: { label: "Create an account", href: "/register" },
   trackLabel: "Track a shipment",
   trackPlaceholder: "Enter your booking number",
+};
+
+/**
+ * The carousel at the very top of the home page.
+ * To use your own photos: put the files in /public/carousel and change `image` (JPG, WebP or SVG, about 1600×700).
+ * Keep titles short (under ~60 characters) and write-ups under ~170 characters.
+ */
+export const carousel = {
+  label: "Sea Go highlights",
+  intervalSeconds: 6,
+  slides: [
+    {
+      image: "/carousel/ocean-freight.svg",
+      width: 1600,
+      height: 700,
+      alt: "A container ship sailing into a golden sunset, stacked with colourful containers",
+      kicker: "Ocean freight",
+      title: "Containers and cargo, followed every mile",
+      body: "Book a full container or a part load between ports across Europe, the Americas, Africa and Asia, and watch it sail on a live map.",
+      cta: { label: "Get a quote", href: "/quote" },
+    },
+    {
+      image: "/carousel/port-verification.svg",
+      width: 1600,
+      height: 700,
+      alt: "An inspector in a hard hat and yellow vest with a clipboard at a port, under three yellow cranes",
+      kicker: "Verified at the port",
+      title: "Checked by people before it sails",
+      body: "Every shipment is put on hold and inspected by our team. Only when it matches what you declared is it approved for transport.",
+      cta: { label: "How verification works", href: "/faq" },
+    },
+    {
+      image: "/carousel/packages-delivery.svg",
+      width: 1600,
+      height: 700,
+      alt: "A Sea Go delivery van beside a pile of parcels and gifts on a quiet street at sunset",
+      kicker: "Packages and gifts",
+      title: "From a gift box to the receiver's door",
+      body: "Send a gift, something you bought online or a box of belongings. Pick a size, add the receiver's address and we handle the rest.",
+      cta: { label: "Send a package", href: "/portal/shipments/new?kind=parcel" },
+    },
+  ],
+};
+
+/** The tracking bar between the carousel and the hero. */
+export const trackStrip = {
+  title: "Track a shipment",
+  subtitle: "Enter your booking number to see where it is right now. No account needed.",
+};
+
+/** Short reassurance points under the hero buttons. */
+export const heroTrust = [
+  "Verified by our team before it sails",
+  "Live tracking on a real map",
+  "Real people in chat",
+];
+
+/** The "checked by people" section on the home page. The checks themselves live in features/shipments/verification.js. */
+export const verifyStory = {
+  title: "Checked by people, before it sails.",
+  body:
+    "Every package and every container is placed on hold the moment you book. Our team inspects the real shipment and only approves it for transport once it matches what you declared. If something is wrong, we tell you what and why, instead of letting it travel.",
 };
 
 export const promises = [

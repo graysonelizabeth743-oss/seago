@@ -1,3 +1,4 @@
+// src/components/home/Illustrations.jsx
 // Friendly illustrations for the "package or container" section. Decorative; they float gently.
 
 export function GiftIllustration({ className }) {
@@ -5,15 +6,15 @@ export function GiftIllustration({ className }) {
     <svg viewBox="0 0 240 180" className={className} aria-hidden="true">
       <ellipse cx="120" cy="164" rx="70" ry="9" fill="currentColor" opacity="0.08" />
       <g className="bob">
-        <rect x="62" y="82" width="116" height="78" rx="8" fill="#1583c8" />
+        <rect x="62" y="82" width="116" height="78" rx="8" fill="#f5b300" />
         <rect x="62" y="82" width="116" height="78" rx="8" fill="url(#gshade)" />
-        <rect x="52" y="64" width="136" height="26" rx="7" fill="#0a68a8" />
-        <rect x="108" y="64" width="24" height="96" fill="#eaf6fd" />
-        <path d="M120 64 C100 28 66 36 82 58 C90 68 112 66 120 64Z" fill="#74beea" />
-        <path d="M120 64 C140 28 174 36 158 58 C150 68 128 66 120 64Z" fill="#a9d8f3" />
-        <circle cx="120" cy="64" r="8" fill="#eaf6fd" />
+        <rect x="52" y="64" width="136" height="26" rx="7" fill="#d99a00" />
+        <rect x="108" y="64" width="24" height="96" fill="currentColor" />
+        <path d="M120 64 C100 28 66 36 82 58 C90 68 112 66 120 64Z" fill="currentColor" opacity="0.85" />
+        <path d="M120 64 C140 28 174 36 158 58 C150 68 128 66 120 64Z" fill="currentColor" opacity="0.65" />
+        <circle cx="120" cy="64" r="8" fill="currentColor" />
       </g>
-      <g fill="#5eead4">
+      <g fill="#f5b300">
         <path className="twinkle" d="M36 52 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z" />
         <path className="twinkle" style={{ animationDelay: "1.2s" }} d="M200 40 l2.5 6 6 2.5 -6 2.5 -2.5 6 -2.5 -6 -6 -2.5 6 -2.5z" />
         <path className="twinkle" style={{ animationDelay: "2.1s" }} d="M206 112 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" />
@@ -45,13 +46,13 @@ export function ContainerIllustration({ className }) {
     <svg viewBox="0 0 240 180" className={className} aria-hidden="true">
       <ellipse cx="120" cy="164" rx="84" ry="9" fill="currentColor" opacity="0.08" />
       <g className="bob">
-        <Box x={34} y={122} fill="#0a68a8" />
-        <Box x={124} y={122} fill="#f59e0b" />
-        <Box x={34} y={86} fill="#14b8c6" />
-        <Box x={124} y={86} fill="#1583c8" />
-        <Box x={79} y={50} fill="#ef6a5a" />
+        <Box x={34} y={122} fill="#5a5649" />
+        <Box x={124} y={122} fill="#f5b300" />
+        <Box x={34} y={86} fill="#ffd84d" />
+        <Box x={124} y={86} fill="#7d796a" />
+        <Box x={79} y={50} fill="#e4572e" />
       </g>
-      <g stroke="#5eead4" strokeWidth="2" strokeLinecap="round" opacity="0.8">
+      <g stroke="#f5b300" strokeWidth="2" strokeLinecap="round" opacity="0.8">
         <path className="twinkle" d="M206 40 v10 M201 45 h10" />
         <path className="twinkle" style={{ animationDelay: "1.4s" }} d="M28 52 v8 M24 56 h8" />
       </g>

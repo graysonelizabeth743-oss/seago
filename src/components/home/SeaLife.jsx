@@ -1,3 +1,4 @@
+// src/components/home/SeaLife.jsx
 // Decorative life for the home hero: twinkling stars, drifting gulls and ships sailing across the waves.
 // Everything is pure CSS/SVG (see globals.css) and hidden from assistive tech.
 
@@ -9,7 +10,7 @@ const STARS = [
 
 export function Stars() {
   return (
-    <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div className="pointer-events-none absolute inset-0 -z-10 hidden dark:block" aria-hidden="true">
       {STARS.map(([x, y, d], i) => (
         <span key={i} className="twinkle absolute h-[3px] w-[3px] rounded-full bg-white" style={{ left: `${x}%`, top: `${y}%`, animationDelay: `${d}s` }} />
       ))}
@@ -20,7 +21,7 @@ export function Stars() {
 function Gull({ className, style }) {
   return (
     <div className={`gull absolute ${className}`} style={style}>
-      <svg viewBox="0 0 28 10" width="28" height="10" className="flap" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="1.6" strokeLinecap="round">
+      <svg viewBox="0 0 28 10" width="28" height="10" className="flap text-graphite-500 dark:text-white/75" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
         <path d="M1 7 Q7 0 14 6 Q21 0 27 7" />
       </svg>
     </div>
@@ -39,29 +40,29 @@ export function Gulls() {
 
 function CargoShip() {
   const boxes = [
-    ["#ffb454", "#5eead4", "#f87171", "#74beea", "#a78bfa", "#ffb454"],
-    ["#5eead4", "#74beea", "#ffb454", "#f87171", "#5eead4", "#74beea"],
+    ["#ffc61a", "#f7f6f2", "#e4572e", "#8d8777", "#ffc61a", "#d6d3c7"],
+    ["#f7f6f2", "#ffc61a", "#8d8777", "#e4572e", "#ffd84d", "#d6d3c7"],
   ];
   return (
-    <svg viewBox="0 0 170 70" width="150" height="62" className="bobship">
+    <svg viewBox="0 0 170 70" width="150" height="62" className="bobship text-graphite-700 dark:text-graphite-300">
       {boxes.map((row, r) =>
-        row.map((c, i) => <rect key={`${r}-${i}`} x={14 + i * 17} y={24 - r * 11} width="15" height="10" rx="1.5" fill={c} />)
+        row.map((c, i) => <rect key={`${r}-${i}`} x={14 + i * 17} y={24 - r * 11} width="15" height="10" rx="1.5" fill={c} stroke="rgba(22,20,14,0.2)" strokeWidth="0.6" />)
       )}
-      <rect x="120" y="8" width="22" height="26" rx="2" fill="#f4fafd" />
-      <rect x="124" y="13" width="14" height="4" rx="1" fill="#74beea" />
-      <rect x="124" y="20" width="14" height="4" rx="1" fill="#74beea" />
-      <path d="M4 34 H158 L146 56 H18 Z" fill="#0d3a5f" />
-      <path d="M8 40 H154 L150 46 H12 Z" fill="#3fa0dc" />
+      <rect x="120" y="8" width="22" height="26" rx="2" fill="#f7f6f2" stroke="rgba(22,20,14,0.25)" strokeWidth="0.8" />
+      <rect x="124" y="13" width="14" height="4" rx="1" fill="#ffc61a" />
+      <rect x="124" y="20" width="14" height="4" rx="1" fill="#ffc61a" />
+      <path d="M4 34 H158 L146 56 H18 Z" fill="currentColor" />
+      <path d="M8 40 H154 L150 46 H12 Z" fill="#ffc61a" />
     </svg>
   );
 }
 
 function Sailboat() {
   return (
-    <svg viewBox="0 0 60 60" width="46" height="46" className="bobship">
-      <path d="M30 6 L30 40 L10 40 Z" fill="#f4fafd" />
-      <path d="M33 14 L33 40 L50 40 Z" fill="#74beea" />
-      <path d="M6 42 H54 L47 54 H13 Z" fill="#0d3a5f" />
+    <svg viewBox="0 0 60 60" width="46" height="46" className="bobship text-graphite-700 dark:text-graphite-300">
+      <path d="M30 6 L30 40 L10 40 Z" fill="#ffffff" stroke="#aaa697" strokeWidth="1" />
+      <path d="M33 14 L33 40 L50 40 Z" fill="#ffc61a" />
+      <path d="M6 42 H54 L47 54 H13 Z" fill="currentColor" />
     </svg>
   );
 }

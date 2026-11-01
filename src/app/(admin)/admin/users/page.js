@@ -1,3 +1,4 @@
+// src/app/(admin)/admin/users/page.js
 "use client";
 
 import { useMemo, useState } from "react";
@@ -53,7 +54,7 @@ export default function CustomersPage() {
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search name, email, company"
           aria-label="Search customers"
-          className="h-10 w-full rounded-xl border border-line bg-surface pl-9 pr-3 text-sm placeholder:text-muted/70 focus:border-sea-400 focus:outline-none focus:ring-2 focus:ring-sea-400/30"
+          className="h-10 w-full rounded-xl border border-line bg-surface pl-9 pr-3 text-sm placeholder:text-muted/70 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/35"
         />
       </div>
 
@@ -66,7 +67,7 @@ export default function CustomersPage() {
           <ul className="divide-y divide-line">
             {visible.map((u) => (
               <li key={u.id} className="flex flex-wrap items-center gap-x-4 gap-y-3 px-4 py-4 sm:px-6">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sea-100 text-sm font-bold text-sea-800 dark:bg-sea-900 dark:text-sea-100">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-bold text-brand-900 dark:bg-brand-900 dark:text-brand-100">
                   {initials(u.name || u.email)}
                 </span>
                 <div className="min-w-0 flex-1 basis-48">
@@ -75,7 +76,7 @@ export default function CustomersPage() {
                 </div>
                 <Badge tone={u.role === "admin" ? "info" : "neutral"}>{u.role === "admin" ? "Admin" : "Customer"}</Badge>
                 <div className="flex items-center gap-2">
-                  <Link href={`/admin/inbox?c=${u.id}`} className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-line px-3 text-xs font-semibold hover:border-sea-400 hover:text-link">
+                  <Link href={`/admin/inbox?c=${u.id}`} className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-line px-3 text-xs font-semibold hover:border-brand-500 hover:text-link">
                     <Icon name="message" size={14} /> Message
                   </Link>
                   {u.id !== user.uid && (

@@ -1,3 +1,4 @@
+// src/app/(marketing)/services/[slug]/page.js
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import PageIntro from "@/components/layout/PageIntro";
@@ -40,7 +41,7 @@ export default async function ServicePage({ params }) {
           <ul className="mt-8 space-y-3.5">
             {service.points.map((p) => (
               <li key={p} className="flex items-start gap-3">
-                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-sea-100 text-sea-700 dark:bg-sea-900 dark:text-sea-200">
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-800 dark:bg-brand-900 dark:text-brand-200">
                   <Icon name="check" size={14} strokeWidth={3} />
                 </span>
                 <span className="text-sm sm:text-base">{p}</span>

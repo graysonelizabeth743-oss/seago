@@ -1,8 +1,9 @@
+// src/components/ui/forms.jsx
 import { cn } from "@/lib/cn";
 
 const base =
   "w-full rounded-xl border bg-surface px-3.5 text-sm text-ink placeholder:text-muted/70 " +
-  "transition-colors duration-150 focus:outline-none focus:border-sea-400 focus:ring-2 focus:ring-sea-400/30 " +
+  "transition-colors duration-150 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/35 " +
   "disabled:opacity-60 disabled:cursor-not-allowed";
 
 export function Field({ label, htmlFor, hint, error, className, children }) {

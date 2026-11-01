@@ -1,3 +1,4 @@
+// src/app/(admin)/admin/page.js
 "use client";
 
 import Link from "next/link";
@@ -18,7 +19,7 @@ function Stat({ label, value, href, loading, tone }) {
     </>
   );
   return href ? (
-    <Link href={href} className="card block p-5 transition-colors hover:border-sea-400">{body}</Link>
+    <Link href={href} className="card block p-5 transition-colors hover:border-brand-500">{body}</Link>
   ) : (
     <div className="card p-5">{body}</div>
   );

@@ -1,3 +1,4 @@
+// src/app/(marketing)/contact/page.js
 import PageIntro from "@/components/layout/PageIntro";
 import ContactForm from "@/features/contact/ContactForm";
 import Icon from "@/components/ui/Icon";
@@ -23,8 +24,8 @@ export default function ContactPage() {
           <ul className="space-y-4">
             {items.map((i) => (
               <li key={i.label + i.value}>
-                <a href={i.href} className="group flex items-center gap-4 rounded-2xl border border-line bg-surface p-4 transition-colors hover:border-sea-400">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-sea-50 text-sea-600 dark:bg-sea-900 dark:text-sea-200">
+                <a href={i.href} className="group flex items-center gap-4 rounded-2xl border border-line bg-surface p-4 transition-colors hover:border-brand-500">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-100 text-brand-800 dark:bg-brand-900 dark:text-brand-200">
                     <Icon name={i.icon} size={20} />
                   </span>
                   <span className="min-w-0">

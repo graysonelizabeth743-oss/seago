@@ -1,3 +1,4 @@
+// src/features/shipments/TrackingLookup.jsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -65,7 +66,7 @@ export default function TrackingLookup() {
               autoComplete="off"
               autoCapitalize="characters"
               spellCheck={false}
-              className="h-12 w-full rounded-xl border border-line bg-canvas pl-11 pr-3 font-mono text-sm uppercase placeholder:font-sans placeholder:normal-case placeholder:text-muted/70 focus:border-sea-400 focus:outline-none focus:ring-2 focus:ring-sea-400/30"
+              className="h-12 w-full rounded-xl border border-line bg-canvas pl-11 pr-3 font-mono text-sm uppercase placeholder:font-sans placeholder:normal-case placeholder:text-muted/70 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/35"
             />
           </div>
           <Button type="submit" size="lg">Track</Button>

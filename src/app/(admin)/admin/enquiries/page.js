@@ -1,3 +1,4 @@
+// src/app/(admin)/admin/enquiries/page.js
 "use client";
 
 import { useState } from "react";
@@ -51,7 +52,7 @@ export default function EnquiriesPage() {
                   type="button"
                   onClick={() => toggle(e)}
                   disabled={busy === e.id}
-                  className="h-9 rounded-lg border border-line px-3.5 text-xs font-semibold transition-colors hover:border-sea-400 hover:text-link disabled:opacity-50"
+                  className="h-9 rounded-lg border border-line px-3.5 text-xs font-semibold transition-colors hover:border-brand-500 hover:text-link disabled:opacity-50"
                 >
                   {e.status === "new" ? "Mark handled" : "Reopen"}
                 </button>

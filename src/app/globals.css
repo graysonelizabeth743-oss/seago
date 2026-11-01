@@ -1,30 +1,42 @@
+/* src/app/globals.css */
 @import "tailwindcss";
 
 /* Dark mode is driven by <html data-theme="dark"> (set before paint in layout.js) */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 /* ── Palette ─────────────────────────────────────────────────────────────────
-   sea-*   brand blues, from foam (50) to deep keel (950)
-   aqua-*  a single live-signal accent, used sparingly
+   brand-*     the Sea Go yellow, from pale cream (50) to deep amber-brown (950)
+   graphite-*  warm near-black neutrals: the dark theme, hero and footer
+   Yellow is the accent (buttons, highlights, live signals) on solid white or graphite.
+   Text ON yellow is always graphite (text-on-primary): white on yellow fails contrast.
    Semantic tokens below switch between light and dark.                       */
 @theme {
   --font-sans: "Public Sans Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-display: "Manrope Variable", "Public Sans Variable", ui-sans-serif, system-ui, sans-serif;
 
-  --color-sea-50: #eaf6fd;
-  --color-sea-100: #d3ecfa;
-  --color-sea-200: #a9d8f3;
-  --color-sea-300: #74beea;
-  --color-sea-400: #3fa0dc;
-  --color-sea-500: #1583c8;
-  --color-sea-600: #0a68a8;
-  --color-sea-700: #0b5386;
-  --color-sea-800: #0e3f66;
-  --color-sea-900: #0b2d49;
-  --color-sea-950: #071c30;
+  --color-brand-50: #fffbeb;
+  --color-brand-100: #fff3c2;
+  --color-brand-200: #ffe685;
+  --color-brand-300: #ffd84d;
+  --color-brand-400: #ffc61a;
+  --color-brand-500: #f5b300;
+  --color-brand-600: #d99a00;
+  --color-brand-700: #a87400;
+  --color-brand-800: #7a5400;
+  --color-brand-900: #4d3500;
+  --color-brand-950: #2b1d00;
 
-  --color-aqua-400: #2dd4e0;
-  --color-aqua-500: #14b8c6;
+  --color-graphite-50: #f7f6f2;
+  --color-graphite-100: #ebe9e1;
+  --color-graphite-200: #d6d3c7;
+  --color-graphite-300: #aaa697;
+  --color-graphite-400: #7d796a;
+  --color-graphite-500: #5a5649;
+  --color-graphite-600: #403d33;
+  --color-graphite-700: #2c2a23;
+  --color-graphite-800: #1d1c17;
+  --color-graphite-900: #131210;
+  --color-graphite-950: #0b0a08;
 }
 
 @theme inline {
@@ -36,37 +48,40 @@
   --color-muted: var(--c-muted);
   --color-primary: var(--c-primary);
   --color-primary-hover: var(--c-primary-hover);
+  --color-on-primary: var(--c-on-primary);
   --color-link: var(--c-link);
 }
 
 :root {
   color-scheme: light;
   --c-canvas: #ffffff;
-  --c-soft: #f2f7fb;
+  --c-soft: #faf8f1;
   --c-surface: #ffffff;
-  --c-line: #d9e5ee;
-  --c-ink: #0b1b2b;
-  --c-muted: #53697c;
-  --c-primary: #0a68a8;
-  --c-primary-hover: #0b5386;
-  --c-link: #0a68a8;
-  --c-ring: #3fa0dc;
-  --shadow-card: 0 1px 2px rgba(7, 28, 48, 0.05), 0 10px 28px -14px rgba(7, 28, 48, 0.16);
+  --c-line: #e8e3d4;
+  --c-ink: #16140e;
+  --c-muted: #5f5a4a;
+  --c-primary: #f5b300;
+  --c-primary-hover: #e0a200;
+  --c-on-primary: #16140e;
+  --c-link: #8a5f00;
+  --c-ring: #f5b300;
+  --shadow-card: 0 1px 2px rgba(22, 20, 14, 0.05), 0 10px 28px -14px rgba(22, 20, 14, 0.16);
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --c-canvas: #06121f;
-  --c-soft: #0a1b2d;
-  --c-surface: #0d2136;
-  --c-line: #1a3550;
-  --c-ink: #e7f0f8;
-  --c-muted: #92a9bd;
-  --c-primary: #0f76b8;
-  --c-primary-hover: #1583c8;
-  --c-link: #62b6ee;
-  --c-ring: #3fa0dc;
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 28px -14px rgba(0, 0, 0, 0.6);
+  --c-canvas: #0e0d0a;
+  --c-soft: #14130f;
+  --c-surface: #1b1a15;
+  --c-line: #33302a;
+  --c-ink: #f5f3ea;
+  --c-muted: #a8a394;
+  --c-primary: #ffc61a;
+  --c-primary-hover: #ffd34d;
+  --c-on-primary: #14110a;
+  --c-link: #ffc83d;
+  --c-ring: #ffc61a;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.45), 0 10px 28px -14px rgba(0, 0, 0, 0.65);
 }
 
 @layer base {
@@ -96,8 +111,8 @@
     border-radius: 6px;
   }
   ::selection {
-    background: var(--color-sea-300);
-    color: var(--color-sea-950);
+    background: var(--color-brand-300);
+    color: var(--color-graphite-950);
   }
   button:not(:disabled), [role="button"]:not([aria-disabled="true"]) {
     cursor: pointer;
@@ -166,34 +181,34 @@
 
 /* ── Route map colours ───────────────────────────────────────────────────── */
 .worldmap {
-  --m-sea: #d8e9f5;
-  --m-land: #f7fafc;
-  --m-border: #bdd0e0;
-  --m-route: #0a68a8;
-  --m-done: #0a68a8;
-  --m-label: #0b1b2b;
-  --m-halo: #d8e9f5;
-  --m-port: #7d97ad;
+  --m-sea: #ece8da;
+  --m-land: #ffffff;
+  --m-border: #d3ccb7;
+  --m-route: #8a857a;
+  --m-done: #c58f00;
+  --m-label: #16140e;
+  --m-halo: #ece8da;
+  --m-port: #9a9482;
 }
 [data-theme="dark"] .worldmap {
-  --m-sea: #0a1d31;
-  --m-land: #133049;
-  --m-border: #1f4766;
-  --m-route: #3fa0dc;
-  --m-done: #62c8f2;
-  --m-label: #e7f0f8;
-  --m-halo: #0a1d31;
-  --m-port: #6c93b1;
+  --m-sea: #12110e;
+  --m-land: #211f19;
+  --m-border: #3a3629;
+  --m-route: #8d8777;
+  --m-done: #ffc61a;
+  --m-label: #f5f3ea;
+  --m-halo: #12110e;
+  --m-port: #7d796a;
 }
 /* Always-dark surfaces such as the home hero */
 .worldmap.on-dark {
   --m-sea: transparent;
-  --m-land: rgba(255, 255, 255, 0.1);
-  --m-border: rgba(255, 255, 255, 0.14);
+  --m-land: rgba(255, 255, 255, 0.09);
+  --m-border: rgba(255, 255, 255, 0.13);
   --m-route: rgba(255, 255, 255, 0.5);
-  --m-done: #5eead4;
+  --m-done: #ffc61a;
   --m-label: #ffffff;
-  --m-halo: rgba(7, 28, 48, 0.85);
+  --m-halo: rgba(11, 10, 8, 0.85);
   --m-port: rgba(255, 255, 255, 0.4);
 }
 
@@ -228,3 +243,60 @@
   .gull { left: 30%; }
   [data-reveal="hidden"] { opacity: 1; transform: none; }
 }
+
+/* ── Hero follows the light/dark toggle ──────────────────────────────────── */
+.hero { background: linear-gradient(180deg, var(--hero-a) 0%, var(--hero-b) 100%); }
+:root .hero {
+  --hero-a: #fff6d4;
+  --hero-b: #ffffff;
+  --hero-glow: rgba(245, 179, 0, 0.32);
+  --hero-glow2: rgba(245, 179, 0, 0.14);
+  --hero-dot: rgba(22, 20, 14, 0.07);
+}
+[data-theme="dark"] .hero {
+  --hero-a: #0b0a08;
+  --hero-b: #1d1c17;
+  --hero-glow: rgba(255, 198, 26, 0.2);
+  --hero-glow2: rgba(255, 198, 26, 0.08);
+  --hero-dot: rgba(255, 255, 255, 0.07);
+}
+.hero-glow {
+  background:
+    radial-gradient(60rem 30rem at 78% 40%, var(--hero-glow), transparent 60%),
+    radial-gradient(40rem 20rem at 8% 0%, var(--hero-glow2), transparent 60%);
+}
+.hero-dots {
+  background-image: radial-gradient(var(--hero-dot) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── Carousel ─────────────────────────────────────────────────────────────── */
+@keyframes carousel-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.carousel-fill { transform-origin: left center; animation-name: carousel-fill; animation-timing-function: linear; animation-fill-mode: forwards; }
+.carousel-shade {
+  background: linear-gradient(180deg, rgba(11, 10, 8, 0.3) 0%, rgba(11, 10, 8, 0.58) 38%, rgba(11, 10, 8, 0.93) 100%);
+}
+@media (min-width: 1024px) {
+  .carousel-shade {
+    background:
+      linear-gradient(90deg, rgba(11, 10, 8, 0.9) 0%, rgba(11, 10, 8, 0.74) 34%, rgba(11, 10, 8, 0.2) 62%, rgba(11, 10, 8, 0) 100%),
+      linear-gradient(0deg, rgba(11, 10, 8, 0.55), transparent 30%);
+  }
+}
+.ctl {
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(11, 10, 8, 0.45);
+  color: #fff;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: background-color 0.15s, color 0.15s, transform 0.15s;
+}
+.ctl:hover { background: var(--color-brand-400); color: var(--color-graphite-950); border-color: transparent; }
+.ctl:active { transform: scale(0.94); }
+@media (prefers-reduced-motion: reduce) { .carousel-fill { animation: none; transform: none; } }

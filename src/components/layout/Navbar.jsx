@@ -1,3 +1,4 @@
+// src/components/layout/Navbar.jsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -102,7 +103,7 @@ export default function Navbar() {
           containing block for any fixed-position child, so the drawer would shrink to the header's height. */}
       {open && (
         <div className="fixed inset-0 z-50 md:hidden" role="dialog" aria-modal="true" aria-label="Menu">
-          <button type="button" aria-label="Close menu" onClick={() => setOpen(false)} className="fade-in absolute inset-0 bg-sea-950/60 backdrop-blur-sm" />
+          <button type="button" aria-label="Close menu" onClick={() => setOpen(false)} className="fade-in absolute inset-0 bg-graphite-950/60 backdrop-blur-sm" />
           <div className="sheet-in absolute inset-y-0 left-0 flex w-[min(20rem,86vw)] flex-col bg-canvas shadow-2xl">
             <div className="flex h-16 items-center justify-between border-b border-line px-5">
               <Logo />

@@ -1,3 +1,4 @@
+// src/features/globe/Globe.jsx
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -7,6 +8,32 @@ import { findRoute } from "@/features/map/routing";
 import { densify, cumulative } from "@/features/map/geo";
 
 const RAD = Math.PI / 180;
+
+/** Globe colours. The light globe is cream with graphite land; the dark one is graphite with gold land. */
+const PALETTES = {
+  dark: {
+    glow0: "rgba(255,198,26,0.30)", glow1: "rgba(255,198,26,0)",
+    ocean: ["#4a4535", "#24221b", "#0b0a08"],
+    grat: "rgba(255,255,255,0.09)",
+    landFill: "rgba(255,206,77,0.30)", landStroke: "rgba(255,226,140,0.62)",
+    route: "rgba(255,255,255,0.2)",
+    portKey: "#ffffff", portDim: "rgba(255,255,255,0.65)", portStroke: null,
+    pulse: "255,198,26", trail: "255,198,26", shadow: "rgba(255,198,26,0.95)",
+    hull: "#ffffff", boxes: ["#ffc61a", "#f7f6f2", "#e4572e"], bridge: "#f7f6f2",
+    limb: "rgba(255,214,102,0.6)", spec: "rgba(255,255,255,0.18)",
+  },
+  light: {
+    glow0: "rgba(245,179,0,0.34)", glow1: "rgba(245,179,0,0)",
+    ocean: ["#fffef6", "#ffeeaa", "#f0c957"],
+    grat: "rgba(22,20,14,0.08)",
+    landFill: "rgba(34,31,22,0.9)", landStroke: "rgba(22,20,14,1)",
+    route: "rgba(22,20,14,0.3)",
+    portKey: "#ffc61a", portDim: "rgba(255,198,26,0.95)", portStroke: "rgba(22,20,14,0.9)",
+    pulse: "199,140,0", trail: "199,140,0", shadow: "rgba(245,179,0,0.9)",
+    hull: "#2c2a23", boxes: ["#d99a00", "#e4572e", "#5a5649"], bridge: "#16140e",
+    limb: "rgba(22,20,14,0.28)", spec: "rgba(255,255,255,0.6)",
+  },
+};
 
 // Real sea routes with a ship on each. Pairs are port codes from config/logistics.js.
 const ROUTES = [
@@ -72,6 +99,16 @@ export default function Globe({ className, label = "Rotating globe with ships sa
     const routes = buildRoutes();
     const endpointCodes = new Set(routes.flatMap((r) => r.ends));
 
+    // Follow the site theme toggle (data-theme on <html>)
+    const root = document.documentElement;
+    const pick = () => (root.dataset.theme === "dark" ? PALETTES.dark : PALETTES.light);
+    let pal = pick();
+    const themeObserver = new MutationObserver(() => {
+      pal = pick();
+      if (reduced) draw();
+    });
+    themeObserver.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+
     const state = { lng0: 12, lat0: 20, speed: 7, size: 0, dpr: 1, dragging: false, lastX: 0, lastY: 0, visible: true };
     let time = reduced ? 9 : 0;
     let raf = 0;
@@ -111,8 +148,8 @@ export default function Globe({ className, label = "Rotating globe with ships sa
 
       // Atmosphere glow
       const glow = ctx.createRadialGradient(cx, cy, r * 0.92, cx, cy, r * 1.3);
-      glow.addColorStop(0, "rgba(63,160,220,0.38)");
-      glow.addColorStop(1, "rgba(63,160,220,0)");
+      glow.addColorStop(0, pal.glow0);
+      glow.addColorStop(1, pal.glow1);
       ctx.fillStyle = glow;
       ctx.beginPath();
       ctx.arc(cx, cy, r * 1.3, 0, Math.PI * 2);
@@ -120,9 +157,9 @@ export default function Globe({ className, label = "Rotating globe with ships sa
 
       // Ocean
       const ocean = ctx.createRadialGradient(cx - r * 0.38, cy - r * 0.42, r * 0.08, cx, cy, r * 1.05);
-      ocean.addColorStop(0, "#2b8cc8");
-      ocean.addColorStop(0.55, "#145a90");
-      ocean.addColorStop(1, "#08294a");
+      ocean.addColorStop(0, pal.ocean[0]);
+      ocean.addColorStop(0.55, pal.ocean[1]);
+      ocean.addColorStop(1, pal.ocean[2]);
       ctx.fillStyle = ocean;
       ctx.beginPath();
       ctx.arc(cx, cy, r, 0, Math.PI * 2);
@@ -134,7 +171,7 @@ export default function Globe({ className, label = "Rotating globe with ships sa
       ctx.clip();
 
       // Graticule
-      ctx.strokeStyle = "rgba(255,255,255,0.09)";
+      ctx.strokeStyle = pal.grat;
       ctx.lineWidth = 0.8;
       for (let lng = -180; lng < 180; lng += 30) {
         ctx.beginPath();
@@ -164,8 +201,8 @@ export default function Globe({ className, label = "Rotating globe with ships sa
       }
 
       // Land. Far-side points are pushed onto the horizon so partly-hidden coastlines close along the edge.
-      ctx.fillStyle = "rgba(168,218,247,0.34)";
-      ctx.strokeStyle = "rgba(205,236,252,0.55)";
+      ctx.fillStyle = pal.landFill;
+      ctx.strokeStyle = pal.landStroke;
       ctx.lineWidth = 0.8;
       for (const ring of GLOBE_LAND) {
         let any = false;
@@ -191,7 +228,7 @@ export default function Globe({ className, label = "Rotating globe with ships sa
 
       // Routes: faint full lane, then a glowing trail behind each ship
       for (const route of routes) {
-        ctx.strokeStyle = "rgba(255,255,255,0.2)";
+        ctx.strokeStyle = pal.route;
         ctx.lineWidth = 1 * s;
         ctx.beginPath();
         let pen = false;
@@ -211,13 +248,18 @@ export default function Globe({ className, label = "Rotating globe with ships sa
         const [x, y, c] = proj(p.lng, p.lat);
         if (c <= 0.05) continue;
         const key = endpointCodes.has(p.code);
-        ctx.fillStyle = key ? "#ffffff" : "rgba(255,255,255,0.65)";
+        ctx.fillStyle = key ? pal.portKey : pal.portDim;
         ctx.beginPath();
         ctx.arc(x, y, (key ? 2.6 : 1.8) * s, 0, Math.PI * 2);
         ctx.fill();
+        if (pal.portStroke) {
+          ctx.strokeStyle = pal.portStroke;
+          ctx.lineWidth = 0.9 * s;
+          ctx.stroke();
+        }
         if (key) {
           const phase = (time * 0.5 + (p.lng + 180) / 360) % 1;
-          ctx.strokeStyle = `rgba(94,234,212,${0.5 * (1 - phase)})`;
+          ctx.strokeStyle = `rgba(${pal.pulse},${0.6 * (1 - phase)})`;
           ctx.lineWidth = 1.2 * s;
           ctx.beginPath();
           ctx.arc(x, y, (3 + phase * 9) * s, 0, Math.PI * 2);
@@ -242,7 +284,7 @@ export default function Globe({ className, label = "Rotating globe with ships sa
           if (tt < 0) continue;
           const [tx, ty, tc] = proj(...pointAt(route, tt));
           if (prev && tc > 0.03) {
-            ctx.strokeStyle = `rgba(94,234,212,${(k / steps) * 0.9 * fade})`;
+            ctx.strokeStyle = `rgba(${pal.trail},${(k / steps) * 0.95 * fade})`;
             ctx.lineWidth = 2.2 * s;
             ctx.lineCap = "round";
             ctx.beginPath();
@@ -260,19 +302,18 @@ export default function Globe({ className, label = "Rotating globe with ships sa
         ctx.translate(x, y);
         ctx.scale(dir * s * 1.25, s * 1.25);
         ctx.globalAlpha = fade;
-        ctx.shadowColor = "rgba(94,234,212,0.9)";
+        ctx.shadowColor = pal.shadow;
         ctx.shadowBlur = 8;
-        ctx.fillStyle = "#ffffff";
+        ctx.fillStyle = pal.hull;
         ctx.beginPath(); // hull
         ctx.moveTo(-8, 0); ctx.lineTo(8, 0); ctx.lineTo(5.5, 3.6); ctx.lineTo(-6.5, 3.6); ctx.closePath();
         ctx.fill();
         ctx.shadowBlur = 0;
-        const boxes = ["#ffb454", "#5eead4", "#f87171"];
-        boxes.forEach((col, k) => {
+        pal.boxes.forEach((col, k) => {
           ctx.fillStyle = col;
           ctx.fillRect(-6.2 + k * 3.3, -2.8, 3, 2.8);
         });
-        ctx.fillStyle = "#e8f4fc"; // bridge
+        ctx.fillStyle = pal.bridge; // bridge
         ctx.fillRect(4, -4.6, 2.6, 4.6);
         ctx.restore();
       }
@@ -280,13 +321,13 @@ export default function Globe({ className, label = "Rotating globe with ships sa
       ctx.restore();
 
       // Edge light and highlight
-      ctx.strokeStyle = "rgba(160,220,255,0.55)";
+      ctx.strokeStyle = pal.limb;
       ctx.lineWidth = 1.4 * s;
       ctx.beginPath();
       ctx.arc(cx, cy, r, 0, Math.PI * 2);
       ctx.stroke();
       const spec = ctx.createRadialGradient(cx - r * 0.45, cy - r * 0.5, 0, cx - r * 0.45, cy - r * 0.5, r * 0.7);
-      spec.addColorStop(0, "rgba(255,255,255,0.18)");
+      spec.addColorStop(0, pal.spec);
       spec.addColorStop(1, "rgba(255,255,255,0)");
       ctx.fillStyle = spec;
       ctx.beginPath();
@@ -349,6 +390,7 @@ export default function Globe({ className, label = "Rotating globe with ships sa
 
     return () => {
       cancelAnimationFrame(raf);
+      themeObserver.disconnect();
       ro.disconnect();
       io.disconnect();
       canvas.removeEventListener("pointerdown", onDown);

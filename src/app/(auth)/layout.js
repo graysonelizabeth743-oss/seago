@@ -1,3 +1,4 @@
+// src/app/(auth)/layout.js
 import { Suspense } from "react";
 import Link from "next/link";
 import Logo from "@/components/ui/Logo";
@@ -24,17 +25,17 @@ export default function AuthLayout({ children }) {
         </footer>
       </div>
 
-      <aside className="relative isolate hidden overflow-hidden bg-gradient-to-b from-sea-950 via-sea-900 to-sea-700 text-white lg:block" aria-hidden="true">
-        <div className="absolute inset-0 -z-10 opacity-60" style={{ background: "radial-gradient(40rem 24rem at 70% 70%, rgba(63,160,220,0.35), transparent 60%)" }} />
+      <aside className="relative isolate hidden overflow-hidden bg-gradient-to-b from-graphite-950 via-graphite-900 to-graphite-800 text-white lg:block" aria-hidden="true">
+        <div className="absolute inset-0 -z-10 opacity-60" style={{ background: "radial-gradient(40rem 24rem at 70% 70%, rgba(255,198,26,0.22), transparent 60%)" }} />
         <div className="flex h-full flex-col justify-center px-14 pb-40">
           <p className="max-w-md font-display text-4xl font-extrabold leading-tight !text-white">
             Every milestone. Every message. One place.
           </p>
-          <p className="mt-5 max-w-sm text-sea-100/85">
+          <p className="mt-5 max-w-sm text-graphite-200">
             Book containers, follow your cargo port to port and talk to our team without leaving your account.
           </p>
         </div>
-        <Waves fill="#0b5386" />
+        <Waves fill="#1d1c17" forceDark />
       </aside>
     </div>
   );

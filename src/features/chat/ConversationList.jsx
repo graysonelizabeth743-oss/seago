@@ -1,3 +1,4 @@
+// src/features/chat/ConversationList.jsx
 "use client";
 
 import { useMemo, useState } from "react";
@@ -27,7 +28,7 @@ export default function ConversationList({ conversations, selectedId, onSelect, 
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search conversations"
             aria-label="Search conversations"
-            className="h-10 w-full rounded-xl border border-line bg-canvas pl-9 pr-3 text-sm placeholder:text-muted/70 focus:border-sea-400 focus:outline-none focus:ring-2 focus:ring-sea-400/30"
+            className="h-10 w-full rounded-xl border border-line bg-canvas pl-9 pr-3 text-sm placeholder:text-muted/70 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/35"
           />
         </div>
       </div>
@@ -64,7 +65,7 @@ export default function ConversationList({ conversations, selectedId, onSelect, 
                   active ? "border-primary bg-soft" : "border-transparent hover:bg-soft/70"
                 )}
               >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sea-100 text-sm font-bold text-sea-800 dark:bg-sea-900 dark:text-sea-100">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-bold text-brand-900 dark:bg-brand-900 dark:text-brand-100">
                   {initials(c.userName || c.userEmail)}
                 </span>
                 <span className="min-w-0 flex-1">
@@ -79,7 +80,7 @@ export default function ConversationList({ conversations, selectedId, onSelect, 
                       {c.lastSenderRole === "admin" && "You: "}
                       {c.lastMessage}
                     </span>
-                    {unread > 0 && <Badge tone="info" className="!bg-primary !px-2 !py-0.5 !text-white">{unread}</Badge>}
+                    {unread > 0 && <Badge tone="info" className="!bg-primary !px-2 !py-0.5 !text-on-primary">{unread}</Badge>}
                   </span>
                 </span>
               </button>

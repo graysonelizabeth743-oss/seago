@@ -1,3 +1,4 @@
+// src/features/shipments/BookingForm.jsx
 "use client";
 
 import { useMemo, useState } from "react";
@@ -37,7 +38,7 @@ function Stepper({ step }) {
               <span
                 className={cn(
                   "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-colors",
-                  done ? "bg-primary text-white" : current ? "border-2 border-primary text-link" : "border border-line text-muted"
+                  done ? "bg-primary text-on-primary" : current ? "border-2 border-primary text-link" : "border border-line text-muted"
                 )}
               >
                 {done ? <Icon name="check" size={14} strokeWidth={3} /> : i + 1}
@@ -68,7 +69,7 @@ function PartyCard({ title, icon, accent, children }) {
   return (
     <section className={cn("card space-y-5 p-5 sm:p-6", accent && "border-primary/60 ring-1 ring-primary/20")}>
       <h3 className="flex items-center gap-2.5 text-lg font-bold">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-sea-50 text-sea-600 dark:bg-sea-900 dark:text-sea-200">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-100 text-brand-800 dark:bg-brand-900 dark:text-brand-200">
           <Icon name={icon} size={17} />
         </span>
         {title}
@@ -233,10 +234,10 @@ export default function BookingForm() {
                     onClick={() => setForm((f) => ({ ...f, kind: k.code }))}
                     className={cn(
                       "card flex flex-col items-start gap-3 p-6 text-left transition-[border-color,box-shadow]",
-                      on ? "border-primary ring-2 ring-primary/25" : "hover:border-sea-400"
+                      on ? "border-primary ring-2 ring-primary/25" : "hover:border-brand-500"
                     )}
                   >
-                    <span className={cn("flex h-12 w-12 items-center justify-center rounded-2xl", on ? "bg-primary text-white" : "bg-sea-50 text-sea-600 dark:bg-sea-900 dark:text-sea-200")}>
+                    <span className={cn("flex h-12 w-12 items-center justify-center rounded-2xl", on ? "bg-primary text-on-primary" : "bg-brand-100 text-brand-800 dark:bg-brand-900 dark:text-brand-200")}>
                       <Icon name={k.code === "parcel" ? "package" : "container"} size={24} />
                     </span>
                     <span>
@@ -275,7 +276,7 @@ export default function BookingForm() {
                     {parcelSizes.map((s) => {
                       const on = form.sizeCode === s.code;
                       return (
-                        <label key={s.code} className={cn("flex cursor-pointer items-start gap-3 rounded-xl border p-3.5 transition-colors", on ? "border-primary bg-soft" : "border-line hover:border-sea-400")}>
+                        <label key={s.code} className={cn("flex cursor-pointer items-start gap-3 rounded-xl border p-3.5 transition-colors", on ? "border-primary bg-soft" : "border-line hover:border-brand-500")}>
                           <input type="radio" name="sizeCode" value={s.code} checked={on} onChange={set("sizeCode")} className="mt-1 accent-[var(--c-primary)]" />
                           <span>
                             <span className="block text-sm font-semibold">{s.label}</span>

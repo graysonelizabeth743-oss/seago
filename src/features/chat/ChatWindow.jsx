@@ -1,3 +1,4 @@
+// src/features/chat/ChatWindow.jsx
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -117,7 +118,7 @@ export default function ChatWindow({ conversationId, viewerRole, viewer, custome
             <Icon name="arrowLeft" size={18} />
           </button>
         )}
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sea-600 text-sm font-bold text-white">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-500 text-sm font-bold text-graphite-950">
           {viewerRole === "admin" ? initials(title) : <Icon name="anchor" size={18} />}
         </span>
         <div className="min-w-0">
@@ -179,7 +180,7 @@ export default function ChatWindow({ conversationId, viewerRole, viewer, custome
                     <div
                       className={cn(
                         "whitespace-pre-wrap break-words rounded-2xl px-3.5 py-2 text-sm leading-relaxed shadow-sm",
-                        mine ? "rounded-br-md bg-primary text-white" : "rounded-bl-md border border-line bg-surface text-ink",
+                        mine ? "rounded-br-md bg-primary text-on-primary" : "rounded-bl-md border border-line bg-surface text-ink",
                         m.pending && "opacity-70"
                       )}
                     >
@@ -211,13 +212,13 @@ export default function ChatWindow({ conversationId, viewerRole, viewer, custome
             maxLength={MAX_MESSAGE_LENGTH}
             placeholder="Write a message…"
             disabled={!isFirebaseConfigured}
-            className="max-h-36 min-h-11 flex-1 resize-none rounded-xl border border-line bg-canvas px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/70 focus:border-sea-400 focus:outline-none focus:ring-2 focus:ring-sea-400/30"
+            className="max-h-36 min-h-11 flex-1 resize-none rounded-xl border border-line bg-canvas px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/70 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/35"
           />
           <button
             type="submit"
             disabled={!text.trim() || sending || !isFirebaseConfigured}
             aria-label="Send message"
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-white transition-[background-color,transform] hover:bg-primary-hover active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-on-primary transition-[background-color,transform] hover:bg-primary-hover active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {sending ? <Icon name="loader" size={18} className="animate-spin" /> : <Icon name="send" size={18} />}
           </button>

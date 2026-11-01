@@ -1,3 +1,4 @@
+// src/app/(portal)/portal/shipments/page.js
 "use client";
 
 import { useMemo, useState } from "react";
@@ -51,7 +52,7 @@ export default function MyShipmentsPage() {
               onClick={() => setFilter(f.key)}
               className={cn(
                 "rounded-lg px-4 py-1.5 text-sm font-semibold transition-colors",
-                filter === f.key ? "bg-primary text-white" : "text-muted hover:text-ink"
+                filter === f.key ? "bg-primary text-on-primary" : "text-muted hover:text-ink"
               )}
             >
               {f.label}
@@ -65,7 +66,7 @@ export default function MyShipmentsPage() {
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search shipments"
             aria-label="Search shipments"
-            className="h-10 w-full rounded-xl border border-line bg-surface pl-9 pr-3 text-sm placeholder:text-muted/70 focus:border-sea-400 focus:outline-none focus:ring-2 focus:ring-sea-400/30"
+            className="h-10 w-full rounded-xl border border-line bg-surface pl-9 pr-3 text-sm placeholder:text-muted/70 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/35"
           />
         </div>
       </div>

@@ -1,3 +1,4 @@
+// src/app/(marketing)/about/page.js
 import PageIntro from "@/components/layout/PageIntro";
 import Button from "@/components/ui/Button";
 import { about, process as steps } from "@/config/content";
@@ -27,7 +28,7 @@ export default function AboutPage() {
             <ol className="mt-6 space-y-5">
               {steps.map((s, i) => (
                 <li key={s.title} className="flex gap-4">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">{i + 1}</span>
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-on-primary">{i + 1}</span>
                   <div>
                     <h3 className="font-bold">{s.title}</h3>
                     <p className="mt-0.5 text-sm text-muted">{s.body}</p>

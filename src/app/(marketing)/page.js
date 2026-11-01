@@ -1,4 +1,7 @@
+// src/app/(marketing)/page.js
 import Link from "next/link";
+import HeroCarousel from "@/components/home/HeroCarousel";
+import TrackStrip from "@/components/home/TrackStrip";
 import Hero from "@/components/home/Hero";
 import PortMarquee from "@/components/home/PortMarquee";
 import { GiftIllustration, ContainerIllustration } from "@/components/home/Illustrations";
@@ -8,7 +11,8 @@ import Faq from "@/components/ui/Faq";
 import Reveal from "@/components/ui/Reveal";
 import CountUp from "@/components/ui/CountUp";
 import WorldMap from "@/features/map/WorldMap";
-import { promises, services, process as steps, faqs } from "@/config/content";
+import { promises, services, process as steps, faqs, verifyStory, carousel } from "@/config/content";
+import { VERIFICATION_CHECKS } from "@/features/shipments/verification";
 import { ports, parcelLimits } from "@/config/logistics";
 import { contact } from "@/config/site";
 
@@ -44,6 +48,8 @@ const ways = [
 export default function HomePage() {
   return (
     <>
+      <HeroCarousel label={carousel.label} intervalSeconds={carousel.intervalSeconds} slides={carousel.slides} />
+      <TrackStrip />
       <Hero />
       <PortMarquee />
 
@@ -76,7 +82,7 @@ export default function HomePage() {
                 <ul className="mt-5 space-y-2.5">
                   {w.points.map((p) => (
                     <li key={p} className="flex items-start gap-3 text-sm">
-                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sea-100 text-sea-700 dark:bg-sea-900 dark:text-sea-200">
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-800 dark:bg-brand-900 dark:text-brand-200">
                         <Icon name="check" size={12} strokeWidth={3} />
                       </span>
                       {p}
@@ -106,6 +112,37 @@ export default function HomePage() {
               <p className="mt-2 text-sm leading-relaxed text-muted sm:text-base">{p.body}</p>
             </Reveal>
           ))}
+        </div>
+      </section>
+
+      {/* Trust: every shipment is verified by people before it sails */}
+      <section className="border-y border-white/10 bg-graphite-900 py-16 text-white sm:py-24" aria-labelledby="verified">
+        <div className="container-x grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+          <Reveal>
+            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-400 text-graphite-950 shadow-lg shadow-brand-500/20">
+              <Icon name="shield" size={28} />
+            </span>
+            <h2 id="verified" className="mt-6 max-w-xl text-3xl font-extrabold !text-white sm:text-4xl">
+              {verifyStory.title}
+            </h2>
+            <p className="mt-4 max-w-xl text-graphite-200 sm:text-lg">{verifyStory.body}</p>
+            <Button href="/faq" variant="light" className="mt-7">
+              How verification works <Icon name="arrowRight" size={16} />
+            </Button>
+          </Reveal>
+
+          <Reveal delay={0.12}>
+            <ul className="space-y-3">
+              {VERIFICATION_CHECKS.map((c) => (
+                <li key={c} className="flex items-start gap-3.5 rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4">
+                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-400 text-graphite-950">
+                    <Icon name="check" size={14} strokeWidth={3} />
+                  </span>
+                  <span className="font-medium">{c}</span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
         </div>
       </section>
 
@@ -157,11 +194,11 @@ export default function HomePage() {
         <Reveal as="ol" className="relative mt-12 grid gap-10 md:grid-cols-4 md:gap-6">
           <span
             aria-hidden="true"
-            className="absolute left-6 right-6 top-6 hidden origin-left scale-x-0 border-t-2 border-dashed border-sea-300 transition-transform duration-[1400ms] ease-out group-data-[reveal=shown]:scale-x-100 md:block dark:border-sea-700"
+            className="absolute left-6 right-6 top-6 hidden origin-left scale-x-0 border-t-2 border-dashed border-brand-400 transition-transform duration-[1400ms] ease-out group-data-[reveal=shown]:scale-x-100 md:block dark:border-brand-700"
           />
           {steps.map((s, i) => (
             <li key={s.title} className="relative">
-              <span className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-primary font-display text-lg font-extrabold text-white shadow-md shadow-sea-900/20">
+              <span className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-primary font-display text-lg font-extrabold text-on-primary shadow-md shadow-brand-700/25">
                 {i + 1}
               </span>
               <h3 className="mt-5 text-lg font-bold">{s.title}</h3>
@@ -173,12 +210,12 @@ export default function HomePage() {
 
       {/* Quote band */}
       <section className="container-x pb-16 sm:pb-24">
-        <Reveal className="relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-sea-900 to-sea-700 px-6 py-12 text-white sm:px-12 sm:py-16">
+        <Reveal className="relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-graphite-900 to-graphite-800 px-6 py-12 text-white sm:px-12 sm:py-16">
           <div aria-hidden="true" className="absolute -right-10 top-1/2 -z-10 hidden w-[28rem] -translate-y-1/2 opacity-60 md:block">
             <WorldMap from="NLRTM" to="USNYC" animate onDark zoomable={false} fit="full" />
           </div>
           <h2 className="max-w-lg text-3xl font-extrabold !text-white sm:text-4xl">Know your numbers before you book</h2>
-          <p className="mt-4 max-w-md text-sea-100/90 sm:text-lg">
+          <p className="mt-4 max-w-md text-graphite-200 sm:text-lg">
             Choose a package or cargo, pick two ports and see an indicative price and transit time in seconds. No account needed.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">

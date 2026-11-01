@@ -1,3 +1,4 @@
+// src/components/home/PortMarquee.jsx
 import { ports } from "@/config/logistics";
 import Icon from "@/components/ui/Icon";
 
@@ -7,7 +8,7 @@ function Row({ hidden = false }) {
     <ul className="flex shrink-0 items-center gap-10 pr-10" aria-hidden={hidden || undefined}>
       {ports.map((p) => (
         <li key={p.code} className="flex items-center gap-2.5 whitespace-nowrap text-sm font-semibold text-muted">
-          <Icon name="anchor" size={14} className="text-sea-400" />
+          <Icon name="anchor" size={14} className="text-brand-500" />
           <span className="text-ink">{p.name}</span>
           <span className="font-normal">{p.country}</span>
         </li>

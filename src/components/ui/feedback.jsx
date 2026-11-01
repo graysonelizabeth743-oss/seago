@@ -1,3 +1,4 @@
+// src/components/ui/feedback.jsx
 import { cn } from "@/lib/cn";
 import Icon from "@/components/ui/Icon";
 
@@ -18,8 +19,8 @@ export function Alert({ tone = "error", children, className }) {
   const tones = {
     error: "border-red-200 bg-red-50 text-red-800 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-200",
     success: "border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-200",
-    info: "border-sea-200 bg-sea-50 text-sea-900 dark:border-sea-800 dark:bg-sea-900/40 dark:text-sea-100",
-    warning: "border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-200",
+    info: "border-brand-200 bg-brand-50 text-brand-950 dark:border-brand-800 dark:bg-brand-900/30 dark:text-brand-100",
+    warning: "border-orange-200 bg-orange-50 text-orange-900 dark:border-orange-900/60 dark:bg-orange-950/40 dark:text-orange-200",
   };
   return (
     <div
@@ -47,10 +48,10 @@ export function EmptyState({ icon = "inbox", title, children, action }) {
 
 export function Badge({ tone = "neutral", children, className }) {
   const tones = {
-    neutral: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200",
-    info: "bg-sea-100 text-sea-800 dark:bg-sea-900 dark:text-sea-100",
+    neutral: "bg-graphite-100 text-graphite-700 dark:bg-graphite-800 dark:text-graphite-200",
+    info: "bg-brand-100 text-brand-900 dark:bg-brand-400/15 dark:text-brand-200",
     success: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200",
-    warning: "bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-200",
+    warning: "bg-orange-100 text-orange-800 dark:bg-orange-500/15 dark:text-orange-300",
     danger: "bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-200",
   };
   return (

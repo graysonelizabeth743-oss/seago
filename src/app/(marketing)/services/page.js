@@ -1,3 +1,4 @@
+// src/app/(marketing)/services/page.js
 import Link from "next/link";
 import PageIntro from "@/components/layout/PageIntro";
 import Icon from "@/components/ui/Icon";
@@ -29,9 +30,9 @@ export default function ServicesPage() {
             <Link
               key={s.slug}
               href={`/services/${s.slug}`}
-              className="card group flex gap-5 p-6 transition-[border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-sea-400 sm:p-7"
+              className="card group flex gap-5 p-6 transition-[border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-brand-500 sm:p-7"
             >
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-sea-50 text-sea-600 dark:bg-sea-900 dark:text-sea-200">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-100 text-brand-800 dark:bg-brand-900 dark:text-brand-200">
                 <Icon name={ICONS[s.slug] || "ship"} size={22} />
               </span>
               <span>
